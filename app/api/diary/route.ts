@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const statements = [];
   for (const record of records) {
     if (!record || typeof record.id !== "string" || !/^[a-zA-Z0-9_-]{1,80}$/.test(record.id) || !Number.isSafeInteger(record.rev) || record.rev < 1 ||
-      !["food","workout","profile","started"].includes(record.kind) || JSON.stringify(record).length > 12000) return reply({ error: "Invalid entry" }, 400);
+      !["food","workout","profile","started","weight"].includes(record.kind) || JSON.stringify(record).length > 12000) return reply({ error: "Invalid entry" }, 400);
     statements.push(db.prepare("INSERT INTO circe_entries (owner,id,revision,payload) VALUES (?,?,?,?) ON CONFLICT(owner,id) DO UPDATE SET revision=excluded.revision,payload=excluded.payload WHERE excluded.revision > circe_entries.revision")
       .bind(user.userId,record.id,record.rev,JSON.stringify(record)));
   }
