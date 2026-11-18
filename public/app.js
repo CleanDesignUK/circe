@@ -59,9 +59,10 @@ function foodLibrary(){
  return [...remembered.values(),...CIRCE_FOODS];
 }
 const profile=()=>records.profile?.data||null;
+const sampleMeal=Engine.parse(Engine.EXAMPLE,CIRCE_FOODS).filter(x=>x.food);
 function sampleEntries(date){
  const diff=Math.round((Engine.asDate(TODAY)-Engine.asDate(date))/86400000);if(diff<0||diff>6)return [];
- const items=Engine.parse(Engine.EXAMPLE,CIRCE_FOODS).filter(x=>x.food);
+ const items=sampleMeal;
  const sizes=[1,.85,1.23,.72,1.15,.96,1.32];
  const foodRows=items.map((x,i)=>({id:'sample-food-'+i,kind:'food',date,food:x.food,qty:diff?Math.max(.25,Math.round(x.qty*sizes[diff]*4)/4):x.qty}));
  const minutes=[30,45,25,35,45,20,30][diff];

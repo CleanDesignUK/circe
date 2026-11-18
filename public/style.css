@@ -34,3 +34,4 @@ dialog{width:min(535px,calc(100% - 30px));max-height:88dvh;overflow:auto;padding
 .method-question{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:10px 0}.method-question b{font-size:.83rem}.recipe-feedback{display:grid;gap:7px;margin-top:16px}.recipe-feedback p{font-size:.83rem;color:var(--muted);display:flex;align-items:center;gap:5px}.recipe-feedback b{font-size:1.05rem;margin-top:5px}.review-tools{display:flex;flex-wrap:wrap;gap:14px}
 
 .recipe-sources{font-size:.78rem;margin-top:8px;color:var(--muted)}.recipe-sources summary{cursor:pointer;font-weight:630}.recipe-sources p{margin-top:7px;line-height:1.45}
+@media(max-width:560px){.dashboard>.right-col-stack{grid-row:4}.dashboard>.diary-card{grid-row:5}.dashboard>.macro-card{grid-row:6}.dashboard>.right-col-stack>section:nth-child(2){order:2}}

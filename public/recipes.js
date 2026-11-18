@@ -42,7 +42,7 @@ const Recipes=(()=>{
      m=[text,text,joined[1]+', '+joined[2]];
    }
    const parts=components(m[2],foods);if(parts.length<2)return null;
-   const method=methodFor(text.toLowerCase()),oil=oils[methods.indexOf(method)],name=m[1].trim().replace(/^\d+(?:\.\d+)?\s*[x×]?\s*/,'')||'Mixed dish';
+   const method=methodFor(text.toLowerCase()),oil=oils[methods.indexOf(method)],name=(text.includes('(')?m[1].trim().replace(/^\d+(?:\.\d+)?\s*[x×]?\s*/,''):m[1].trim())||'Mixed dish';
    const food=make(name.charAt(0).toUpperCase()+name.slice(1),parts,method,oil,1);
    if(food){food.ingredientsText=m[2];food.source+=' · '+parts.map(x=>roundQty(x.qty)+' × '+x.food.unit+' '+x.food.name).join(', ');}
    return {food,title:name,ingredients:m[2],qty:Engine.portion(m[1],null)};
