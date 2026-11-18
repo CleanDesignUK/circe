@@ -1,0 +1,10 @@
+CIRCE packaged-food index
+
+Data © Open Food Facts contributors. This downloadable extract of the Open Food Facts database is available under the Open Database Licence (ODbL) 1.0. Individual database contents are available under the Database Contents Licence (DbCL) 1.0.
+
+ODbL 1.0: https://opendatacommons.org/licenses/odbl/1-0/
+DbCL 1.0: https://opendatacommons.org/licenses/dbcl/1-0/
+Source and terms: https://world.openfoodfacts.org/data and https://world.openfoodfacts.org/terms-of-use
+Product source page: https://world.openfoodfacts.org/product/{barcode}
+
+CIRCE selected a subset of products listed for sale in Indonesia or the United Kingdom. This country tag describes a market and does not establish the country of manufacture. Each row is identified by its source barcode; distinct barcodes can refer to different pack sizes or market formulations. Names and brands reflect the contributor records. Energy is in kcal; protein, carbohydrate and fat are in grams per 100 g or 100 ml as recorded by the source. Energy in kJ was divided by 4.184 when no kcal field was available. A numeric serving appears only when the record supplied an explicit gram or millilitre portion.

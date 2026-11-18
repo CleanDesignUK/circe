@@ -6,7 +6,14 @@ const Engine = (() => {
   function split(text){
     let s=text.trim().replace(/\b(sweet|fish|mac|salt|cheese|ham|sausage|black|peanut butter)\s+(?:and|&)\s+(sour|chips|cheese|pepper|onion|egg|white|jelly)\b/gi,'$1 ‿ $2');
     s=s.replace(/\b(?:and|dan)\b(?=\s+(?:\d|half|one|two|three|a\s|an\s|some\s))/gi,',');
-    return s.split(/[,;\n+]+|\s+\band\b\s+|\s+\bdan\b\s+/i).map(t=>t.replace(/‿/g,'and').replace(/^\s*(today|hari ini|i (ate|had)|i drank|for (breakfast|lunch|dinner)|saya makan)\b\s*[:,-]?\s*/i,'').trim()).filter(Boolean);
+    let depth=0,protectedText='';
+    for(const ch of s){
+      if(ch==='(')depth++;
+      protectedText+=depth>0?ch.replace(/,/g,'∯').replace(/;/g,'∰').replace(/\+/g,'⊕').replace(/\n/g,'∮').replace(/ /g,'␣'):ch;
+      if(ch===')')depth=Math.max(0,depth-1);
+    }
+    return protectedText.split(/[,;\n+]+|\s+\band\b\s+|\s+\bdan\b\s+/i)
+      .map(t=>t.replace(/∯/g,',').replace(/∰/g,';').replace(/⊕/g,'+').replace(/∮/g,' ').replace(/␣/g,' ').replace(/‿/g,'and').replace(/^\s*(today|hari ini|i (ate|had)|i drank|for (breakfast|lunch|dinner)|saya makan)\b\s*[:,-]?\s*/i,'').trim()).filter(Boolean);
   }
   function match(text,catalogue){
     const input=' '+norm(text)+' ', tokens=new Set(input.trim().split(' ')); let best=null, bestScore=0;
@@ -41,9 +48,14 @@ const Engine = (() => {
   const EXAMPLE='Today boiled egg 2, banana bread walnut 1 slice SaladStop, Solaria ricebowl 1 mix sweet and sour, Monster drink 1, Heineken 1 small can, zero cola 1';
   function parse(text,foods){
     return split(text).map(original=>{
-      const food=match(original,foods);
+      const composite=typeof Recipes!=='undefined'&&Recipes.nested(original,foods);
+      if(composite)return {original,food:composite.food,ingredients:composite.ingredients,qty:original.includes('(')?(composite.qty||1):1};
+      const curated=match(original,foods);
+      const indexed=typeof Products!=='undefined'&&(!curated||['Whole food','Drinks','Ingredient reference'].includes(curated.brand))?Products.auto(original):null;
+      const food=indexed||curated;
+      const methodQuestion=food?.requiresMethodCheck&&!/boiled|steamed|rebus|kukus|goreng|fried|crispy/i.test(original);
       const measured=/\d\s*(kg|grams?|g|ml|litres?|l)\b/i.test(original);
-      return {original,food,qty:portion(original,food),needsPortion:!!(food&&measured&&!food.grams)};
+      return {original,food,qty:portion(original,food),methodQuestion,needsPortion:!!(food&&((measured&&!food.grams)||(food.needsServing&&!measured)))};
     });
   }
   const activities = [
